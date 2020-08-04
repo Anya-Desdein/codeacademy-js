@@ -1,13 +1,13 @@
 
-const validChoicesDict = {
-  rock: true,
-  paper: true,
-  scissors: true,
-  bomb: true,
-};
-
 const getUserChoice = userInput => {
   userInput = userInput.toLowerCase();
+
+  const validChoicesDict = {
+    rock: true,
+    paper: true,
+    scissors: true,
+    bomb: true,
+  };
   
   if (userInput in validChoicesDict) {
     return userInput;
@@ -27,23 +27,25 @@ const getComputerChoice = () => {
 };
 
 const determineWinMessage = (userChoice, computerChoice) => {
-  if (userChoice === 'bomb') {
+  if(userChoice === 'bomb') {
     return 'you win';
   }
 
   if (userChoice === computerChoice) {
     return 'tie';
-  } else {
-    if (userChoice === 'rock') {
-      return computerChoice === 'paper' ? 'you loose' : 'you win';
-    }else if (userChoice === 'paper') {
-      return computerChoice === 'scissors' ? 'you loose' : 'you win';
-    }else if (userChoice === 'scissors') {
-      return computerChoice === 'rock' ? 'you loose' : 'you win';
-    }else{
-      throw new Error(`Unexpected choice: ${userChoice}`);
-    }
   }
+
+  const superior = {
+    rock: 'paper',
+    scissors: 'rock',
+    paper: 'scissors'
+  };
+
+  if(!(userChoice in superior)) {
+    throw new Error(`Unexpected user choice: ${userChoice}`);
+  }
+
+  return computerChoice === superior[userChoice] ? 'you loose' : 'you win';
 };
 
 const playGame = () => {
