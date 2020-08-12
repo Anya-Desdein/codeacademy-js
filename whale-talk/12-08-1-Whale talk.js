@@ -1,19 +1,36 @@
-let input = "And it is not. Put on your war paint Cross walks and crossed hearts and hope to die Seal the clouds with grey lining So we can take the world back from the heart-attacked One maniac at a time we will take it back You know time crawls on when you're waiting for the song to start So dance along to the beat of your heart";
 
-const vowels = ['a', 'e', 'i', 'o', 'u', ' '];
-const resultArray = [];
+const vowels = ['A', 'E', 'I', 'O', 'U', ' '];
+const repeated = ['A', 'U'];
 
-const textLength = input.length;
-
-for (let i = 0; i < textLength; i++) {
-    const char = input[i].toLowerCase();
-    if (vowels.includes(char)) {
-        if (char === "a" || char === "u") {
+function toWhaleSpeak(input) {
+    input = input.toUpperCase();
+    const resultArray = [];
+    for (let char of input) {
+        if (vowels.includes(char)) {
+            if (repeated.includes(char)) {
+                resultArray.push(char);
+            }
             resultArray.push(char);
         }
-        resultArray.push(char);
     }
+    return resultArray.join('');
 }
 
-const result = resultArray.join("").toUpperCase();
-console.log(result);
+function toWhaleSpeak2(input) {
+    return Array.from(input.toUpperCase())
+        .filter(char => vowels.includes(char))
+        .map(char => repeated.includes(char) ? `${char}${char}` : char)
+        .join('');
+}
+
+function toWhaleSpeak3(input) {
+    return input
+        .replace(/[^aiueo ]/ig, "")
+        .replace(/([au])/ig, "$1$1");
+}
+
+let input = "And it is not. Put on your war paint Cross walks and crossed hearts and hope to die. Seal the clouds with grey lining. So we can take the world back from the heart-attacked. One maniac at a time we will take it back You know time crawls on when you're waiting for the song to start, so dance along to the beat of your heart.";
+
+console.log("Method 1:", toWhaleSpeak(input));
+console.log("Method 2:", toWhaleSpeak2(input));
+console.log("Method 3:", toWhaleSpeak3(input));
