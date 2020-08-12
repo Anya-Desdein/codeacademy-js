@@ -1,30 +1,37 @@
 const prompts = require('prompts');
 
-const dayOfTheWeekSleep = {
-  monday: 6,
-  tuesday: 4,
-  wednesday: 4,
-  thursday: 13,
-  friday: 12,
-  saturday: 8,
-  sunday: 8,
-};
-const dayOfTheWeekNames = Object.keys(dayOfTheWeekSleep);
+const dayOfTheWeekNames = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];
 
-const validateHourPromptFn = val => {
+const validateIdealHourPromptFn = val => {
   if(val === "") return true;
   if(val < 1) return "You don't like to sleep well. Enter at least one hour.";
   else if(val > 20) return "This program doesn't support hibernating species. Please enter value lower than 20.";
   else return true;
 };
 
-const getActualSleepHoursCurrentWeek = () => {
-    let sleepHoursWeek = 0;
-    for (let i = 0; i < 7; i++) {
-      const day = dayOfTheWeekNames[i];
-      sleepHoursWeek += dayOfTheWeekSleep[day];
-    }
-    return sleepHoursWeek;
+const validateActualHourPromptFn = val => {
+  if(val === "") return true;
+  if(val < 0) return "Don't be negative about your sleep.";
+  else if(val > 24) return "It's impossible to sleep more than 24 hours in a day.";
+  else return true;
+};
+
+const getActualSleepHoursCurrentWeek = async () => {
+  const replies = await prompts(dayOfTheWeekNames.map(dayName => ({
+    type: 'number',
+    name: dayName,
+    message: `Enter your sleep duration for ${dayName}`,
+    validate: validateActualHourPromptFn
+  })));
+  return Object.values(replies).reduce((prev, curr) => prev + curr);
 };
 
 const getidealSleepHoursPerWeek = async () => {
@@ -44,7 +51,7 @@ const getidealSleepHoursPerWeek = async () => {
       name: dayName,
       message: `Enter your ideal sleep duration for ${dayName}`,
       initial: 7.5,
-      validate: validateHourPromptFn
+      validate: validateIdealHourPromptFn
     })));
 
     return Object.values(replies).reduce((prev, curr) => prev + curr);
@@ -54,7 +61,7 @@ const getidealSleepHoursPerWeek = async () => {
       name: 'value',
       message: 'Enter your ideal daily sleep duration in hours',
       initial: 7.5,
-      validate: validateHourPromptFn
+      validate: validateIdealHourPromptFn
     });
     
     return value * 7;
@@ -62,8 +69,10 @@ const getidealSleepHoursPerWeek = async () => {
 };
 
 const calculateSleepDebt = async () => {
-  const actualSleepHours = getActualSleepHoursCurrentWeek();
+  console.log("Enter your sleep target:");
   const idealSleepHours = await getidealSleepHoursPerWeek();
+  console.log("Enter the number of hours you've slept in the past 7 days:");
+  const actualSleepHours = await getActualSleepHoursCurrentWeek();
   if (idealSleepHours === actualSleepHours) {
     console.log(`Spałeś ${actualSleepHours}, jest to idealna wartosc.`)
   } else if (actualSleepHours > idealSleepHours) {
