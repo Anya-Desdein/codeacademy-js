@@ -4,11 +4,14 @@ let overusedWords = ['really', 'very', 'basically'];
 let countOverusedWords = {};
 
 let unnecessaryWords = ['extremely', 'literally', 'actually' ];
+let punctuationMarks = ['.', '!' , '?'];
 
 let storyWords = story.split(' ');
-console.log(storyWords.length);
+console.log("Story word count", storyWords.length);
 
 let betterWords = storyWords.filter(el => !unnecessaryWords.includes(el));
+
+let sentences = 0;
 
 storyWords.forEach(el => {
   if (overusedWords.includes(el)) {
@@ -20,23 +23,10 @@ storyWords.forEach(el => {
   }
 });
 
-countOverusedWords = {};
-storyWords
-  .filter(el => overusedWords.includes(el))
-  .forEach(el => {
-    if (el in countOverusedWords){
-      countOverusedWords[el]++;
-    }else{
-      countOverusedWords[el] = 1;
-    }
-  });
+for (const el of story){
+  if(punctuationMarks.includes(el)){
+    sentences++;
+  }
+};
 
-countOverusedWords = {};
-storyWords
-  .filter(el => overusedWords.includes(el))
-  .forEach(el => {
-    countOverusedWords[el] =
-      (countOverusedWords[el] || 0) + 1;
-  });
-
-console.log(countOverusedWords);
+console.log("Sentence count", sentences);
