@@ -20,4 +20,23 @@ storyWords.forEach(el => {
   }
 });
 
+countOverusedWords = {};
+storyWords
+  .filter(el => overusedWords.includes(el))
+  .forEach(el => {
+    if (el in countOverusedWords){
+      countOverusedWords[el]++;
+    }else{
+      countOverusedWords[el] = 1;
+    }
+  });
+
+countOverusedWords = {};
+storyWords
+  .filter(el => overusedWords.includes(el))
+  .forEach(el => {
+    countOverusedWords[el] =
+      (countOverusedWords[el] || 0) + 1;
+  });
+
 console.log(countOverusedWords);
