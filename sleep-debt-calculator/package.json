@@ -1,0 +1,14 @@
+{
+  "name": "sleep-debt-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "04-08-2-Sleep Debt Calculator.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "Heavelyn",
+  "license": "ISC",
+  "dependencies": {
+    "prompts": "^2.3.2"
+  }
+}
