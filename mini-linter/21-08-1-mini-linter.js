@@ -23,6 +23,7 @@ storyWords.forEach(el => {
   }
 });
 
+
 for (const el of story){
   if(punctuationMarks.includes(el)){
     sentences++;
@@ -30,3 +31,13 @@ for (const el of story){
 };
 
 console.log("Sentence count", sentences);
+
+
+console.log("Overused words:");
+
+for (const key in countOverusedWords) {
+  if(countOverusedWords.hasOwnProperty(key)) {
+    console.log("  " + key + ":", countOverusedWords[key]);
+  }
+}
+console.log(betterWords.join(" "));
